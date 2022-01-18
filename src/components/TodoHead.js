@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTodoState } from '../TodoContext';
 
 const TodoHeadBlock = styled.div`
   padding: 48px 32px 24px 32px;
@@ -25,11 +26,22 @@ const TodoHeadBlock = styled.div`
 `;
 
 function TodoHead() {
+  const todos = useTodoState();
+  const unDoneTasks = todos.filter((todo) => todo.done === false);
+
+  const today = new Date();
+  const dateString = today.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  const dayName = today.toLocaleDateString('ko-KR', { weekday: 'long' });
+
   return (
     <TodoHeadBlock>
-      <h1>2019년 7월 10일</h1> {/* 오늘 날짜로 바꾸기 */}
-      <div className="day">수요일</div>
-      <div className="tasks-left">할 일 2개 남음</div>
+      <h1>{dateString}</h1>
+      <div className="day">{dayName}</div>
+      <div className="tasks-left">할 일 {unDoneTasks.length}개 남음</div>
     </TodoHeadBlock>
   );
 }
